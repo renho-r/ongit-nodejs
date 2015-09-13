@@ -28,6 +28,9 @@ app.use('/users', users);
 var renho = require('./routes/renho');
 app.use('/renho', renho);
 
+var backJson = require('./routes/backJson');
+app.use('/backJson', backJson);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
