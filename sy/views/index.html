@@ -8,38 +8,17 @@
         <div class="col-md-10 cal-month-box">
           <div class="row cal-month-box-title">
             <div class="col-md-12">
-              <div class="cal-title-cell">7</div>
-              <div class="cal-title-cell">1</div>
-              <div class="cal-title-cell">2</div>
-              <div class="cal-title-cell">3</div>
-              <div class="cal-title-cell">4</div>
-              <div class="cal-title-cell">5</div>
-              <div class="cal-title-cell">6</div>
+              <div class="cal-title-cell">星期日</div>
+              <div class="cal-title-cell">星期一</div>
+              <div class="cal-title-cell">星期二</div>
+              <div class="cal-title-cell">星期三</div>
+              <div class="cal-title-cell">星期四</div>
+              <div class="cal-title-cell">星期五</div>
+              <div class="cal-title-cell">星期六</div>
             </div>
           </div>
           <div class="row cal-month-box-body">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-                <div class="cal-body-cell"></div>
-              </div>
-            </div><!--/row-->
+            
           </div><!--/row-->
         </div>
         <div class="col-md-1"></div>
@@ -47,23 +26,73 @@
     </div>
   </div>
 </div>
+<div class="row displayNoneMonth">
+  <div class="col-md-12">
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+    <div class="cal-body-cell"></div>
+  </div>
+</div>
 <script src="javascripts/jquery-1.11.2.js"></script>
 <script src="javascripts/bootstrap.min.js"></script>
+<script src="javascripts/dateUtils.js"></script>
 <script>
   $(document).ready(function() {
-    $('[data-toggle=offcanvas]').click(function() {
-      $('.row-offcanvas').toggleClass('active');
-    });
+    
     initMonth();
     function initMonth() {
-      var nowDate = new Date();
-      var totleDay = getTotleDay(nowDate);
-      nowDate.setDate(1);
-      var indexOfWeek = nowDate.getDay();
-      var bodyCellObj = $(".cal-month-box-body .cal-body-cell");
-      for(var i=indexOfWeek, j=1; i<bodyCellObj.length; i++) {
-        bodyCellObj.eq(i).append(j++);
+      var thisDate = (new Date).fromString(getThisDate());
+      thisDate.setDate(1);
+      var dayOfWeek = thisDate.getDay();
+      var thisMonToDay = thisDate.addMonth(thisDate, "1").addDay(null, "-1").getDate();
+      var lastMonToDay = thisDate.addDay(null, "-1").getDate();
+      $(".cal-month-box-body").empty();
+      for(var i=0; i<thisMonToDay; ) {
+        var cloneObj = $(".displayNoneMonth").clone(true);
+        cloneObj.attr("class", "row");
+        if(0 == i) {
+          var m = dayOfWeek - 1;
+          cloneObj.find(".cal-body-cell").slice(0, dayOfWeek).each(function() {
+            $(this).append("<span class='noInThisMonth numFont'>" + (lastMonToDay - m) + "</span>");
+            m--;
+          })
+          cloneObj.find(".cal-body-cell").slice(dayOfWeek).each(function() {
+            $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
+          })
+          $(".cal-month-box-body").append(cloneObj);
+        }else {
+          var j = 1;
+          cloneObj.find(".cal-body-cell").each(function() {
+            if(i<thisMonToDay) {
+              $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
+            }else {
+              $(this).append("<span class='noInThisMonth numFont'>" + (j++) + "</span>");
+            }
+            $(".cal-month-box-body").append(cloneObj);
+          })
+        }
       }
+    }
+
+    function getThisDate() {
+      var backDate = new Date();
+      $.ajax({
+         type: "POST",
+         url: "/utils/getThisDate",
+         data: "",
+         async: false,
+         dataType: 'json',
+         success: function(data){
+          if(null != data) {
+            backDate = data.thisDate;
+          }
+         }
+      });
+      return backDate;
     }
 
     function getTotleDay(date) {

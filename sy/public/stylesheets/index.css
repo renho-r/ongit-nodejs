@@ -1,48 +1,65 @@
 @media screen and (max-width: 767px) {
-    .row-offcanvas { position: relative;
-    -webkit-transition: all 0.25s ease-out;
-    -moz-transition: all 0.25s ease-out;
-    transition: all 0.25s ease-out;
-  }
-  .row-offcanvas-right .sidebar-offcanvas { right: -50%; /* 6 columns */ }
-  .row-offcanvas-left .sidebar-offcanvas { left: -50%; /* 6 columns */ }
-  .row-offcanvas-right.active { right: 50%; /* 6 columns */ } 
-  .row-offcanvas-left.active { left: 50%; /* 6 columns */ } 
-  .sidebar-offcanvas { position: absolute; top: 0; width: 50%; /* 6 columns */ } }
-  
-  .cal-month-box-body {
-    border-top: 1px solid #e1e1e1;
-    border-left: 1px solid #e1e1e1;
-    border-radius: 2px;
-  }
-  .cal-month-box-title{
-  }
-  .cal-title-cell{
-    width: 14.285714285714286%;
-    text-align: center;
-    float: left;
-  }
-  .cal-title-cell:after, cal-body-cell:after {
-    clear: both;
-  }
-  .cal-month-box-body{
+  .row-offcanvas { position: relative;
+  -webkit-transition: all 0.25s ease-out;
+  -moz-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+}
+.row-offcanvas-right .sidebar-offcanvas { right: -50%; /* 6 columns */ }
+.row-offcanvas-left .sidebar-offcanvas { left: -50%; /* 6 columns */ }
+.row-offcanvas-right.active { right: 50%; /* 6 columns */ } 
+.row-offcanvas-left.active { left: 50%; /* 6 columns */ } 
+.sidebar-offcanvas { position: absolute; top: 0; width: 50%; /* 6 columns */ } }
 
-  }
-  .cal-body-cell{
-    border-bottom: 1px solid #e1e1e1;
-  }
-  .cal-body-cell{
-    width: 14.285714285714286%;
-    height: 100px;
-    border-right: 1px solid #e1e1e1;
-    float: left;
-  }
-  .cal-month-box [class*="cal-cell"]:last-child {
-    border-right: 0px;
-  }
-  .cal-month-box .row{
-    margin: 0;
-  }
-  .cal-month-box .row .col-md-12{
-    padding: 0;
-  }
+.cal-month-box-body {
+  border-top: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  border-radius: 2px;
+}
+.cal-month-box-title{
+}
+.cal-title-cell{
+  width: 14.285714285714286%;
+  text-align: center;
+  float: left;
+}
+.cal-title-cell:after, cal-body-cell:after {
+  clear: both;
+}
+.cal-month-box-body{
+
+}
+.cal-body-cell{
+  border-bottom: 1px solid #e1e1e1;
+}
+.cal-body-cell{
+  width: 14.285714285714286%;
+  height: 150px;
+  border-right: 1px solid #e1e1e1;
+  float: left;
+}
+.cal-month-box [class*="cal-cell"]:last-child {
+  border-right: 0px;
+}
+.cal-month-box .row{
+  margin: 0;
+}
+.cal-month-box .row .col-md-12{
+  padding: 0;
+}
+.displayNoneMonth {
+  display: none;
+}
+.noInThisMonth{
+  color: red;
+}
+  .inThisMonth{
+  color: blue;
+}
+.numFont{
+  float: right;
+  padding-top: 110px;
+  line-height: 30px;
+  font-size: 30px;
+  padding-right: 10px;
+  font-family: cursive;
+}
