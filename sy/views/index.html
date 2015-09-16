@@ -1,0 +1,74 @@
+﻿<% include header.html %>
+<link href="/stylesheets/index.css" rel="stylesheet" media="screen">
+<div class="container-fluid">
+  <div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9 col-md-12 cal-box">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 cal-month-box">
+          <div class="row cal-month-box-title">
+            <div class="col-md-12">
+              <div class="cal-title-cell">7</div>
+              <div class="cal-title-cell">1</div>
+              <div class="cal-title-cell">2</div>
+              <div class="cal-title-cell">3</div>
+              <div class="cal-title-cell">4</div>
+              <div class="cal-title-cell">5</div>
+              <div class="cal-title-cell">6</div>
+            </div>
+          </div>
+          <div class="row cal-month-box-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+                <div class="cal-body-cell"></div>
+              </div>
+            </div><!--/row-->
+          </div><!--/row-->
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="javascripts/jquery-1.11.2.js"></script>
+<script src="javascripts/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('[data-toggle=offcanvas]').click(function() {
+      $('.row-offcanvas').toggleClass('active');
+    });
+    initMonth();
+    function initMonth() {
+      var nowDate = new Date();
+      var totleDay = getTotleDay(nowDate);
+      nowDate.setDate(1);
+      var indexOfWeek = nowDate.getDay();
+      var bodyCellObj = $(".cal-month-box-body .cal-body-cell");
+      for(var i=indexOfWeek, j=1; i<bodyCellObj.length; i++) {
+        bodyCellObj.eq(i).append(j++);
+      }
+    }
+
+    function getTotleDay(date) {
+      var thisTime = date
+    }
+  });
+</script>
+<% include footer.html %>
