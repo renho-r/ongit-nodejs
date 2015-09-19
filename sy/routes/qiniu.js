@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var qiniu = require('qiniu');
 var fs = require('fs');
+var macMod = require('qiniu/qiniu/auth/digest');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -13,13 +14,13 @@ router.get('/', function(req, res, next) {
   var extra = new qiniu.io.PutExtra();
   console.log(extra);
 
-  var target_path = 'h:\\a1.jpg';
+  var target_path = 'e:\\a1.jpg';
   console.log(target_path);
   //使用同步方式重命名一个文件
-  var readStream = fs.createReadStream('h:\\a.jpg');
+  var readStream = fs.createReadStream('e:\\a.jpg');
   var writeStream = fs.createWriteStream(target_path);
   readStream.pipe(writeStream, function(){
-    fs.unlinkSync('h:\\');
+    fs.unlinkSync('e:\\');
   });
   fs.readFile(target_path, function(err, data){
             console.log("data length is " + data.length);
@@ -47,5 +48,12 @@ router.get('/', function(req, res, next) {
             });
         });
 });
-
+router.get('/dl', function(req, res, next) {
+  var baseUrl = qiniu.rs.makeBaseUrl('', 'renho/a.jpg');
+  var policy = new qiniu.rs.GetPolicy();
+  var mac = new macMod.Mac('', '');
+  var backUrl = policy.makeRequest(baseUrl, mac);
+  console.info(backUrl);
+  res.render('jpg', {backUrl: backUrl});
+})
 module.exports = router;
