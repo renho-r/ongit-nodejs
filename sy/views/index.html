@@ -4,9 +4,41 @@
   <div class="row row-offcanvas row-offcanvas-right">
     <div class="col-xs-12 col-sm-9 col-md-12 cal-box">
       <div class="row">
+          <div class="col-md-12">
+            <form class="form-horizontal">
+              <div class="col-md-2 col-md-offset-4">
+                <div class="form-group">
+                    <input id="sy" type="text" value="0" name="sy" class="col-md-8 form-control">
+                </div>
+              </div>
+              <div class="col-md-1">
+              </div>
+              <div class="col-md-2">
+                <form class="form-horizontal" role="form" action="#">
+                  <div class="form-group">
+                      <input id="sm" type="text" value="0" name="sm" class="col-md-8 form-control">
+                  </div>
+                </form>
+              </div>
+            </form>
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="row" style="height: 20px;"
+      </div>
+      <div class="row">
         <div class="col-md-1">
-          <span style="float: right; height: 600px; padding: auto 0; display: inline-block;"> <i class="icon-angle-left icon-4x"></i>
-          </span>
+          <div style="float: right; height: 700px; margin: auto 0; line-height: 700px;">
+            <i class="icon-angle-left icon-4x"></i>
+          </div>
         </div>
         <div class="col-md-10 cal-month-box">
           <div class="row cal-month-box-title">
@@ -22,7 +54,11 @@
           </div>
           <div class="row cal-month-box-body"></div>
           <!--/row--> </div>
-        <div class="col-md-1"></div>
+        <div class="col-md-1">
+          <div style="float: left; height: 700px; margin: auto 0; line-height: 700px;">
+            <i class="icon-angle-right icon-4x"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,17 +76,62 @@
 </div>
 <script src="javascripts/jquery-1.11.2.js"></script>
 <script src="javascripts/bootstrap.min.js"></script>
+<script src="plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
 <script src="javascripts/dateUtils.js"></script>
 <script>
   $(document).ready(function() {
-    
+    $("input[name='sy']").TouchSpin({
+      verticalbuttons: true,
+      min: 2000,
+      max: 2020,
+      prefix: 'YEAR'
+    });
+    $("input[name='sy'], input[name='sm']").on('touchspin.on.stopspin', function() {
+      var year = $("#sy").val();
+      var month = $("#sm").val();
+      var date = new Date();
+      date.setFullYear(year);
+      date.setMonth(parseInt(month) - 1);
+      showMonth(date);
+    })
+    $("input[name='sm']").TouchSpin({
+      verticalbuttons: true,
+      min: 1,
+      max: 12,
+       prefix: 'MONTH'
+    });
+    $(".icon-angle-right").on('click', function() {
+      alert('right');
+    })
+
+    $(".cal-body-cell").on('click', function() {
+      alert($(this).data('dateData'));
+    })
+
     initMonth();
+
     function initMonth() {
       var thisDate = (new Date).fromString(getThisDate());
-      thisDate.setDate(1);
-      var dayOfWeek = thisDate.getDay();
-      var thisMonToDay = thisDate.addMonth(thisDate, "1").addDay(null, "-1").getDate();
-      var lastMonToDay = thisDate.addDay(null, "-1").getDate();
+      $("input[name='sy']").val(thisDate.getFullYear());
+      $("input[name='sm']").val(parseInt(thisDate.getMonth()) + 1);
+      showMonth(thisDate);
+    }
+
+    function showMonth(showDate) {
+      var today = showDate.getDate();
+      var thisMonthStr = showDate.format('yyyy-MM');
+
+      showDate.setDate(1);
+
+      var lastMonthDate = showDate.addDay(showDate, "-1");
+      var lastMonthStr = lastMonthDate.format('yyyy-MM');
+
+      var nextMonthDate = showDate.addMonth(showDate, "1");
+      var nextMonthStr = nextMonthDate.format('yyyy-MM');
+
+      var dayOfWeek = showDate.getDay();
+      var thisMonToDay = showDate.addMonth(showDate, "1").addDay(null, "-1").getDate();
+      var lastMonToDay = showDate.addDay(null, "-1").getDate();
       $(".cal-month-box-body").empty();
       for(var i=0; i<thisMonToDay; ) {
         var cloneObj = $(".displayNoneMonth").clone(true);
@@ -58,10 +139,12 @@
         if(0 == i) {
           var m = dayOfWeek - 1;
           cloneObj.find(".cal-body-cell").slice(0, dayOfWeek).each(function() {
+            $(this).data('dateData', lastMonthStr + "-" + (lastMonToDay - m));
             $(this).append("<span class='noInThisMonth numFont'>" + (lastMonToDay - m) + "</span>");
             m--;
           })
           cloneObj.find(".cal-body-cell").slice(dayOfWeek).each(function() {
+            $(this).data('dateData', thisMonthStr + "-" + (i+1));
             $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
           })
           $(".cal-month-box-body").append(cloneObj);
@@ -69,8 +152,15 @@
           var j = 1;
           cloneObj.find(".cal-body-cell").each(function() {
             if(i<thisMonToDay) {
-              $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
+              $(this).data('dateData', thisMonthStr + "-" + (i+1));
+              if((i+1) == today) {
+                $(this).addClass('thisDay');
+                $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
+              } else {
+                $(this).append("<span class='inThisMonth numFont'>" + (++i) + "</span>");
+              }
             }else {
+              $(this).data('dateData', nextMonthStr + "-" + (j));
               $(this).append("<span class='noInThisMonth numFont'>" + (j++) + "</span>");
             }
             $(".cal-month-box-body").append(cloneObj);
